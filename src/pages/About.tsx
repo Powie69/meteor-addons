@@ -27,7 +27,7 @@ function Tag({ tag }: { tag: string }) {
 
 const About: FunctionalComponent<RoutableProps> = () => {
   return (
-    <main class="flex flex-col gap-5 items-center px-5 flex-grow">
+    <main class="flex flex-col gap-5 items-center px-5 grow">
       <section class="w-3/5 max-lg:w-4/5 max-md:w-full">
         <h2 class="font-medium text-4xl pb-2">About</h2>
         <article class="flex flex-col gap-2">
@@ -126,7 +126,7 @@ const About: FunctionalComponent<RoutableProps> = () => {
               It may take some time to verify your addon. You will be notified
               when a decision is made.
             </p>
-            <p class="itlaic">
+            <p class="italic">
               Please only submit addons that you have created.
             </p>
           </article>
@@ -203,10 +203,10 @@ const About: FunctionalComponent<RoutableProps> = () => {
                 meteor-addon-list.json
               </p>{" "}
               in the root directory of your addon, and add the fields you wish
-              to overide.
+              to override.
             </p>
             <section className="ml-5 p-5 bg-slate-950 border border-purple-300/20 rounded">
-              <pre className="font-mono text-purple-200 whitespace-pre max-sm:whitespace-pre-wrap break-words">
+              <pre className="font-mono text-purple-200 whitespace-pre max-sm:whitespace-pre-wrap wrap-break-word">
                 {JSON.stringify(
                   {
                     description: "A short description of your addon.",
