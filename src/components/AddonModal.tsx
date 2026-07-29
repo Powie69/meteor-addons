@@ -9,6 +9,7 @@ import Archived from "./icons/Archived.tsx";
 import Homepage from "./icons/Homepage.tsx";
 import type Addon from "../helpers/addon";
 import Discord from "./icons/Discord.tsx";
+import Share from "./icons/Share.tsx";
 import Warning from "./icons/Warning.tsx";
 import Github from "./icons/Github.tsx";
 import LinkButton from "./LinkButton";
@@ -51,6 +52,28 @@ export default function AddonModal({
 
   const iconSrc = addon.custom.icon || addon.links.icon || DEFAULT_ICON;
   const { handleError } = useImageFallback(iconSrc);
+
+  const handleShareButton = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: addon.name,
+          text: addon.custom.description || addon.description,
+          url: window.location.href,
+        });
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError")
+          return;
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        alert("Link copied to clipboard!");
+      } catch {
+        alert("Unable to copy the link.");
+      }
+    }
+  };
 
   return (
     <dialog
@@ -166,12 +189,13 @@ export default function AddonModal({
             </div>
           )}
           {addon.links.github != "" && (
-            <a href={addon.links.github} target="_blank">
+            <a title="github" href={addon.links.github} target="_blank">
               <Github style="w-8 h-8" />
             </a>
           )}
           {(addon.custom.discord || addon.links.discord) && (
             <a
+              title="discord"
               href={addon.custom.discord || addon.links.discord}
               target="_blank"
             >
@@ -180,12 +204,16 @@ export default function AddonModal({
           )}
           {(addon.custom.homepage || addon.links.homepage) && (
             <a
+              title="homepage"
               href={addon.custom.homepage || addon.links.homepage}
               target="_blank"
             >
               <Homepage style="w-8 h-8" />
             </a>
           )}
+          <button title="Share addon" onClick={handleShareButton}>
+            <Share style="w-8 h-8"></Share>
+          </button>
         </div>
       </section>
     </dialog>
