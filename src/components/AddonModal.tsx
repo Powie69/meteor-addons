@@ -3,15 +3,16 @@ import pickVersion from "../helpers/pickVersion.ts";
 import formatList from "../helpers/formatList.ts";
 import FeatureSection from "./FeatureSection.tsx";
 import { useEffect, useRef } from "preact/hooks";
-import Verified from "./icons/Verified.tsx";
-import Download from "./icons/Download.tsx";
-import Archived from "./icons/Archived.tsx";
 import Homepage from "./icons/Homepage.tsx";
-import type Addon from "../helpers/addon";
-import Discord from "./icons/Discord.tsx";
-import Share from "./icons/Share.tsx";
+import Download from "./icons/Download.tsx";
+import Verified from "./icons/Verified.tsx";
+import Archived from "./icons/Archived.tsx";
 import Warning from "./icons/Warning.tsx";
+import Discord from "./icons/Discord.tsx";
+import type Addon from "../helpers/addon";
 import Github from "./icons/Github.tsx";
+import { useToast } from "./Toast.tsx";
+import Share from "./icons/Share.tsx";
 import LinkButton from "./LinkButton";
 import Close from "./icons/Close.tsx";
 import Star from "./icons/Star.tsx";
@@ -52,6 +53,7 @@ export default function AddonModal({
 
   const iconSrc = addon.custom.icon || addon.links.icon || DEFAULT_ICON;
   const { handleError } = useImageFallback(iconSrc);
+  const { toast } = useToast();
 
   const handleShareButton = async () => {
     if (navigator.share) {
@@ -68,9 +70,9 @@ export default function AddonModal({
     } else {
       try {
         await navigator.clipboard.writeText(window.location.href);
-        alert("Link copied to clipboard!");
+        toast("Link copied to clipboard!");
       } catch {
-        alert("Unable to copy the link.");
+        toast("Unable to copy the link.", "error");
       }
     }
   };
@@ -78,10 +80,10 @@ export default function AddonModal({
   return (
     <dialog
       ref={dialogRef}
-      className="-translate-x-1/2 -translate-y-1/2 backdrop:backdrop-blur-lg bg-transparent left-1/2 top-1/2 w-3/4"
+      className="-translate-x-1/2 -translate-y-1/2 backdrop:backdrop-blur-lg bg-transparent left-1/2 top-1/2 w-3/4 max-sm:w-full"
       onClose={closeAddonModal}
     >
-      <section className="bg-slate-900 border border-purple-300/20 flex flex-col h-[88vh] max-h-[88vh] max-md:h-[90vh] max-md:w-11/12 max-sm:h-[90vh] max-sm:w-11/12 overflow-hidden rounded text-slate-400 ">
+      <section className="bg-slate-900 border border-purple-300/20 flex flex-col h-[88vh] max-h-[88vh] max-md:h-[90vh] max-md:w-11/12 max-sm:h-[90vh] max-sm:w-full overflow-hidden rounded text-slate-400 ">
         <div class="flex-none p-5 pb-0 w-full relative">
           <button
             class="absolute top-5 right-5 cursor-pointer z-10"
